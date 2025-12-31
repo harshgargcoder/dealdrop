@@ -29,6 +29,8 @@ export async function POST(request) {
 
     if (productsError) throw productsError;
 
+    console.log(`Found ${products.length} products to check`);
+
     const results = {
       total: products.length,
       updated: 0,
@@ -83,13 +85,12 @@ export async function POST(request) {
 
             if (user?.email) {
               const emailResult = await sendPriceDropAlert(
-                user.email,
+                userEmail,
                 product,
                 oldPrice,
                 newPrice
               );
-
-              if (emailResult?.success) {
+              if(emailResult.success){
                 results.alertsSent++;
               }
             }
@@ -97,8 +98,8 @@ export async function POST(request) {
         }
 
         results.updated++;
-      } catch (err) {
-        console.error(`Error processing product ${product.id}:`, err);
+      } catch (error) {
+        console.error(`Error processing product ${product.id}:`, error);
         results.failed++;
       }
     }
@@ -110,12 +111,8 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error("Cron job error:", error);
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-
-// curl -X POST https://getdealdrop.vercel.app/api/cron/check-prices -H "Authorization: Bearer 250239232d85cfc79d8ce10ce45dbeaab75b99a14123c0faf14d52828f7be4f9
+// curl -X POST https://getdealdrops.vercel.app/api/cron/check-prices -H "Authorization: Bearer 250239232d85cfc79d8ce10ce45dbeaab75b99a14123c0faf14d52828f7be4f9
