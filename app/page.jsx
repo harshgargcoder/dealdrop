@@ -38,82 +38,111 @@ export default async function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-linear-to-br from-orange-50 via-white to-orange-50">
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-10">
+    <main className="min-h-screen relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-100">
+
+      {/* Soft Glow Background */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-indigo-300 rounded-full blur-3xl opacity-30"></div>
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-violet-300 rounded-full blur-3xl opacity-30"></div>
+
+      {/* Header */}
+      <header className="bg-white/70 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          {/*  Left Side Logo */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-3">
             <Image
               src={"/deal-drop-logo.jpeg"}
               alt="DealDrop Logo"
               width={400}
               height={200}
-              className="h-10 w-auto"
+              className="h-10 w-auto hover:scale-105 transition-transform duration-300"
             />
           </div>
-          {/* Auth Button */}
+
           <AuthButton user={user} />
         </div>
       </header>
 
-      <section className="text-center py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold font-serif mb-5 tracking-tight transition-colors text-transparent bg-clip-text bg-linear-to-r from-orange-300 to-red-500 sm:text-5xl">
+      {/* Hero Section */}
+      <section className="text-center py-24 px-4 relative z-10">
+        <div className="max-w-7xl mx-auto">
+
+          <h2 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-600
+">
             Never Miss a Deal Again
           </h2>
 
-          <p className="mt-4 text-xl text-gray-600 sm:text-xl mb-12 max-w-2xl mx-auto">
+          <p className="mt-6 text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
             Track prices from any e-commerce site and get instant alerts when
             prices drop. Save money effortlessly with Deal Drop!
           </p>
 
-          {/*Add Product */}
-          <AddProductForm user={user} />
+          {/* Add Product Card */}
+          <div className="bg-white shadow-xl border border-gray-100 rounded-2xl p-6 max-w-3xl mx-auto hover:shadow-2xl transition duration-300">
+            <AddProductForm user={user} />
+          </div>
 
-          {/*Features */}
+          {/* Features */}
           {products.length === 0 && (
-            <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto mt-16">
+            <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto mt-20">
               {FEATURES.map(({ icon: Icon, title, description }) => (
                 <div
                   key={title}
-                  className="bg-white/70 backdrop-blur-sm border border-gray-200 rounded-lg p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow"
+                  className="group bg-white border border-gray-200 rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
                 >
-                  <div className="bg-orange-100 text-orange-500 rounded-full p-3 mb-4">
+                  <div className="bg-gradient-to-br from-indigo-100 to-violet-100 text-indigo-600 rounded-full p-4 mb-4 group-hover:scale-110 transition-transform duration-300">
                     <Icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{title}</h3>
-                  <p className="text-gray-600">{description}</p>
+
+                  <h3 className="text-xl font-semibold mb-2 text-gray-900">
+                    {title}
+                  </h3>
+
+                  <p className="text-gray-600 leading-relaxed">
+                    {description}
+                  </p>
                 </div>
               ))}
             </div>
           )}
         </div>
       </section>
-        
-      {user && products.length > 0 && 
-        <section className="max-w-7xl mx-auto px-4 pb-20">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-2xl font-bold text-gray-900">Your Tracked Products</h3>
-          <span className="text-gray-600 text-sm">
-            {products.length} {products.length === 1 ? "product" : "products"}
-          </span>
-        </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {products.map(product => <ProductCard key={product.id} product={product} />)}
-            
-          
-        </div>
+      {/* Products Section */}
+      {user && products.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 pb-24 relative z-10">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent">
+              Your Tracked Products
+            </h3>
+
+            <span className="text-gray-600 text-sm">
+              {products.length}{" "}
+              {products.length === 1 ? "product" : "products"}
+            </span>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="transition-transform duration-300 hover:scale-[1.02]"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
         </section>
-      }
+      )}
 
+      {/* Empty State */}
       {user && products.length === 0 && (
-        <section className="max-w-2xl mx-auto px-4 pb-20 text-center">
-          <div className="bg-white rounded-xl border-2 border-dashed border-gray-300 p-12">
+        <section className="max-w-2xl mx-auto px-4 pb-24 text-center relative z-10">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-12 hover:shadow-md transition">
             <TrendingDown className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
               No products yet
             </h3>
+
             <p className="text-gray-600">
               Add your first product above to start tracking prices!
             </p>

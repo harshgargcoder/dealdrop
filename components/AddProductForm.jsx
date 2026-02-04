@@ -51,7 +51,7 @@ const AddProductForm = ({ user }) => {
             disabled={loading}
           />
           <Button
-            className="h-10 bg-orange-600 hover:bg-orange-700 sm:h-9 px-8"
+            className="h-10 bg-primary hover:bg-primary sm:h-9 px-8"
             type="submit"
             disabled={loading}
             size={"lg"}

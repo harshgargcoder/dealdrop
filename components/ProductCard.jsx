@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
             </h3>
 
             <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold text-orange-500">
+              <span className="text-3xl font-bold text-primary">
                 {product.currency} {product.current_price}
               </span>
 
@@ -97,7 +97,7 @@ const ProductCard = ({ product }) => {
             size="sm"
             onClick={handleDelete}
             disabled={deleting}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 gap-1"
+            className="text-primary hover:text-primary hover:bg-indigo-50 gap-1"
           >
             <Trash2 className="w-4 h-4" />
             Remove
